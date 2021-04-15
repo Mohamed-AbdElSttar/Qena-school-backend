@@ -27,9 +27,12 @@ class CoursesGroupSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    group_pk = serializers.PrimaryKeyRelatedField(
+        queryset=CoursesGroup.objects.all(), source='group', write_only=True
+    )
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['group', 'title', 'content', 'created_at', 'group_pk']
         depth = 1
 
 
