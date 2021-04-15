@@ -136,6 +136,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_HEADERS=['*']
+# you should add cros allowed headers
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
