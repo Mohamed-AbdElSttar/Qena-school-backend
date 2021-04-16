@@ -1,15 +1,23 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from .serializers import PostSerializer
+from .serializers import PostSerializer, CoursesGroupSerializer
 
 from .models import *
 # Create your views here.
+
+
 @api_view(['GET'])
-def get_post_group(request,id):
-    print("yes it works works")
-    queryset=Post.objects.filter(group=id)
+def get_post_group(request, id):
+    queryset = Post.objects.filter(group=id)
     if request.method == 'GET':
-        serializer = PostSerializer(queryset,many=True)
+        serializer = PostSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_teacher_groups(request, id):
+    queryset = CoursesGroup.objects.filter(teacher=id)
+    if request.method == 'GET':
+        serializer = CoursesGroupSerializer(queryset, many=True)
         return Response(serializer.data)
