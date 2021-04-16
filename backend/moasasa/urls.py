@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .api import *
 from rest_framework.routers import DefaultRouter
 from .views import get_post_group
@@ -13,3 +16,5 @@ urlpatterns = [
     path('group-post/<int:id>/',get_post_group,name="postgroup")
     ]
 urlpatterns += router.urls
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
