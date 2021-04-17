@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import PostSerializer, CoursesGroupSerializer
+from .serializers import MembershipSerializer, PostSerializer, CoursesGroupSerializer
 
 from .models import *
 # Create your views here.
@@ -20,4 +20,11 @@ def get_teacher_groups(request, id):
     queryset = CoursesGroup.objects.filter(teacher=id)
     if request.method == 'GET':
         serializer = CoursesGroupSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def get_student_mempership(request, id):
+    queryset = Membership.objects.filter(student=id)
+    if request.method == 'GET':
+        serializer = MembershipSerializer(queryset, many=True)
         return Response(serializer.data)

@@ -109,4 +109,3 @@ class Membership(models.Model):
 
     def __str__(self):
         return "{} in {}".format(self.student.name, self.group.name)
-        return "{} in {}".format(self.student.name, self.group.name)

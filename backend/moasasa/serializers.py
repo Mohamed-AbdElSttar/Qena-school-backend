@@ -43,6 +43,13 @@ class AdminSerializer(serializers.ModelSerializer):
 
 
 class MembershipSerializer(serializers.ModelSerializer):
+    group_pk = serializers.PrimaryKeyRelatedField(
+        queryset=CoursesGroup.objects.all(), source='group', write_only=True
+    )
+    student_pk = serializers.PrimaryKeyRelatedField(
+        queryset=Student.objects.all(), source='student', write_only=True)
+
     class Meta:
         model = Membership
-        fields = '__all__'
+        fields = [ 'group', 'student', 'student_pk', 'status', 'validation_code', 'group_pk']
+        depth = 1
