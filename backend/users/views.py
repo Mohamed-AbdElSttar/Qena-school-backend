@@ -1,11 +1,13 @@
-from django.shortcuts import render
-from rest_framework import status
+from django.db.models.query import QuerySet
+from rest_framework import serializers, status
+from rest_framework import response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 import jwt,datetime
+from rest_framework.views import APIView
 # Create your views here.
 
 @api_view(['POST'])
@@ -41,3 +43,29 @@ def logout_user(request):
         'message':status.HTTP_200_OK
     }
     return response
+
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    def get(self, request):
+        query_set = User.objects.all()
+        serializer = UserSerializer(query_set, many=True)
+        return Response(serializer.data)
+
+class UserView(APIView):
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
+        if not token:
+            raise AuthenticationFailed('Unauthenticated')
+        try:
+            payload = jwt.decode(token, 'django-insecure-45-%2klm@4jhgrqi=_wvs8bc1us97kke_1r(pm*o+70t4c(*_6', algorithms=['HS256'])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed('User Not Authenticated')
+        user = User.objects.filter(id=payload['id']).first()
+        serilaizer = UserSerializer(user)
+        return Response(serilaizer.data)
+
