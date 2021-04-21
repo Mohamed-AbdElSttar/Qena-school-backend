@@ -30,6 +30,7 @@ class PostSerializer(serializers.ModelSerializer):
     group_pk = serializers.PrimaryKeyRelatedField(
         queryset=CoursesGroup.objects.all(), source='group', write_only=True
     )
+
     class Meta:
         model = Post
         fields = ['group', 'title', 'content', 'created_at', 'group_pk']
@@ -51,5 +52,6 @@ class MembershipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Membership
-        fields = [ 'group', 'student', 'student_pk', 'status', 'validation_code', 'group_pk']
-        depth = 1
+        fields = ['id', 'group', 'student', 'student_pk',
+                  'status', 'validation_code', 'group_pk']
+        depth = 2

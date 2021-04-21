@@ -1,5 +1,5 @@
 from django.db import models
-# from django.contrib.auth.models import User
+from users.models import User
 
 STATUS_TYPE = (
     ("binding", "binding"),
@@ -24,7 +24,8 @@ LEVELS = (
 
 
 class Student(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, null=False)
     level = models.CharField(choices=LEVELS, max_length=20)
     phone = models.CharField(max_length=11)
@@ -38,7 +39,8 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, null=False)
     description = models.TextField()
     phone = models.CharField(max_length=11)
@@ -84,7 +86,8 @@ class Post(models.Model):
 
 
 class Admin(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, null=False)
     manager = models.ForeignKey(
         "self", null=True, related_name="admin", on_delete=models.SET_NULL
