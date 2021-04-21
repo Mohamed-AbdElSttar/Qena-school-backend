@@ -135,7 +135,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_CREDENTIALS=True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_HEADERS = ['*']
 # you should add cros allowed headers
