@@ -135,9 +135,11 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS=True
+CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_HEADERS = ['*']
+
+
 # you should add cros allowed headers
 # DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
@@ -145,3 +147,10 @@ AUTH_USER_MODEL = 'users.User'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+
+# SESSION_COOKIE_SAMESITE = None
+# CSRF_COOKIE_SAMESITE = None
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_SAVE_EVERY_REQUEST = True
