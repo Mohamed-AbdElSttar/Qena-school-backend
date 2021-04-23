@@ -35,8 +35,13 @@ def get_student_mempership(request, id):
 def groups_search(request):
     name = request.data.get('name')
     level = request.data.get('level')
-    queryset = CoursesGroup.objects.filter(name=name, level=level)
-    print(queryset)
+    if name == "":
+        queryset = CoursesGroup.objects.filter(level=level)
+    elif level == "":
+        queryset = CoursesGroup.objects.filter(name=name,)
+    else:
+        queryset = CoursesGroup.objects.filter(name=name, level=level)
+
     if request.method == 'POST':
         serializer = CoursesGroupSerializer(queryset, many=True)
         return Response(serializer.data)
