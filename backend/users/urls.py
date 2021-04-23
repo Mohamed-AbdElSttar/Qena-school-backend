@@ -7,4 +7,5 @@ urlpatterns = [
     path('signup',RegisterView.as_view(),name="register"),
     path('user',UserView.as_view(),name="user"),
 
+
 ]

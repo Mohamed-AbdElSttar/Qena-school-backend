@@ -14,6 +14,7 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class CoursesGroupSerializer(serializers.ModelSerializer):
     teacher_pk = serializers.PrimaryKeyRelatedField(
         queryset=Teacher.objects.all(), source='teacher', write_only=True
