@@ -1,5 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, status
 from .models import Student, Teacher, CoursesGroup, Post, Admin, Membership
+from users.models import User
 
 
 class StudentSerializer(serializers.ModelSerializer):

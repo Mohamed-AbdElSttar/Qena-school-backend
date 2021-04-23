@@ -32,6 +32,7 @@ class Student(models.Model):
     image = models.ImageField(
         upload_to="moasasa/students/images",
         default="moasasa/students/images/default.jpg",
+        blank=True, null=True
     )
 
     def __str__(self):
@@ -47,6 +48,7 @@ class Teacher(models.Model):
     image = models.ImageField(
         upload_to="moasasa/teachers/images",
         default="moasasa/teachers/images/default.jpg",
+        blank=True, null=True
     )
 
     def __str__(self):
