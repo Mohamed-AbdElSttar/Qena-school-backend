@@ -11,8 +11,6 @@ from rest_framework.views import APIView
 from moasasa.serializers import StudentSerializer, TeacherSerializer, AdminSerializer
 
 
-
-
 @api_view(['POST'])
 def login_user(request):
     email = request.data.get('email')
@@ -79,7 +77,6 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serilaizer = UserSerializer(user)
         return Response(serilaizer.data)
-    
 
 
 @api_view(['POST'])
@@ -120,3 +117,43 @@ def register_student(request):
     studentSerializer.save()
 
     return Response({'user': userSerializer.data, 'student': studentSerializer.data}, status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def register_teacher(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    password1 = request.data.get('password1')
+    if not password == password1:
+        raise AuthenticationFailed('2 Passwords is not identcal ')
+    name = request.data.get('name')
+    description = request.data.get('description')
+    phone = request.data.get('phone')
+    image = request.data.get('image')
+    requestUser = {
+        'email': email,
+        'password': password,
+        'role': 'teacher'
+    }
+
+    user = User.objects.filter(email=email).first()
+    if user:
+        raise AuthenticationFailed('User Already Exist')
+    userSerializer = UserSerializer(data=requestUser)
+    userSerializer.is_valid(raise_exception=True)
+    userSerializer.save()
+
+    user = User.objects.filter(email=email).first()
+
+    requestTeacher = {
+        'user': user.id,
+        'name': name,
+        'description': description,
+        'phone': phone,
+        'image': image
+    }
+    teacherSerializer = TeacherSerializer(data=requestTeacher)
+    teacherSerializer.is_valid(raise_exception=True)
+    teacherSerializer.save()
+
+    return Response({'user': userSerializer.data, 'student': teacherSerializer.data}, status.HTTP_200_OK)
