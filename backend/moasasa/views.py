@@ -23,12 +23,14 @@ def get_teacher_groups(request, id):
         serializer = CoursesGroupSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
 @api_view(['GET'])
 def get_student_mempership(request, id):
     queryset = Membership.objects.filter(student=id)
     if request.method == 'GET':
         serializer = MembershipSerializer(queryset, many=True)
         return Response(serializer.data)
+
 @api_view(['GET'])
 def get_student_by_user_id(request,user_id):
     print("new api works",user_id)
@@ -41,3 +43,20 @@ def get_student_by_user_id(request,user_id):
         return Response({
             "message":status.HTTP_404_NOT_FOUND
         })
+
+
+
+@api_view(['POST'])
+def groups_search(request):
+    name = request.data.get('name')
+    level = request.data.get('level')
+    if name == "":
+        queryset = CoursesGroup.objects.filter(level=level)
+    elif level == "":
+        queryset = CoursesGroup.objects.filter(name=name,)
+    else:
+        queryset = CoursesGroup.objects.filter(name=name, level=level)
+
+    if request.method == 'POST':
+        serializer = CoursesGroupSerializer(queryset, many=True)
+        return Response(serializer.data)

@@ -4,10 +4,14 @@ from rest_framework.response import Response
 from .models import User
 from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
-import jwt,datetime
+import jwt
+import datetime
 from rest_framework.views import APIView
 
-# Create your views here.
+from moasasa.serializers import StudentSerializer, TeacherSerializer, AdminSerializer
+
+
+
 
 @api_view(['POST'])
 def login_user(request):
@@ -47,6 +51,7 @@ def logout_user(request):
 
 class RegisterView(APIView):
     def post(self, request):
+        print("Request data : ", request.data)
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -76,3 +81,42 @@ class UserView(APIView):
         return Response(serilaizer.data)
     
 
+
+@api_view(['POST'])
+def register_student(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    password1 = request.data.get('password1')
+    if not password == password1:
+        raise AuthenticationFailed('2 Passwords is not identcal ')
+    name = request.data.get('name')
+    level = request.data.get('level')
+    phone = request.data.get('phone')
+    image = request.data.get('image')
+    requestUser = {
+        'email': email,
+        'password': password,
+        'role': 'student'
+    }
+
+    user = User.objects.filter(email=email).first()
+    if user:
+        raise AuthenticationFailed('User Already Exist')
+    userSerializer = UserSerializer(data=requestUser)
+    userSerializer.is_valid(raise_exception=True)
+    userSerializer.save()
+
+    user = User.objects.filter(email=email).first()
+
+    requestStudent = {
+        'user': user.id,
+        'name': name,
+        'level': level,
+        'phone': phone,
+        'image': image
+    }
+    studentSerializer = StudentSerializer(data=requestStudent)
+    studentSerializer.is_valid(raise_exception=True)
+    studentSerializer.save()
+
+    return Response({'user': userSerializer.data, 'student': studentSerializer.data}, status.HTTP_200_OK)
