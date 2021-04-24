@@ -1,3 +1,5 @@
+from re import A
+from django.db.models import manager
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -157,3 +159,43 @@ def register_teacher(request):
     teacherSerializer.save()
 
     return Response({'user': userSerializer.data, 'student': teacherSerializer.data}, status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def register_admin(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+    password1 = request.data.get('password1')
+    if not password == password1:
+        raise AuthenticationFailed('2 Passwords is not identcal ')
+    name = request.data.get('name')
+    manager = request.data.get('manager')
+    ssn = request.data.get('ssn')
+    requestUser = {
+        'email': email,
+        'password': password,
+        'role': 'admin'
+    }
+
+    user = User.objects.filter(email=email).first()
+    if user:
+        raise AuthenticationFailed('User Already Exist')
+    userSerializer = UserSerializer(data=requestUser)
+    userSerializer.is_valid(raise_exception=True)
+    userSerializer.save()
+
+    user = User.objects.filter(email=email).first()
+
+    requestAdmin = {
+        'user': user.id,
+        'name': name,
+        'manager': manager,
+        'ssn': ssn
+    }
+    adminSerializer = AdminSerializer(data=requestAdmin)
+    adminSerializer.is_valid(raise_exception=True)
+    adminSerializer.save()
+
+    return Response({'user': userSerializer.data, 'admin': adminSerializer.data}, status.HTTP_200_OK)
+
+
