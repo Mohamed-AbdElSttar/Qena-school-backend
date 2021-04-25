@@ -31,7 +31,7 @@ def login_user(request):
     token = jwt.encode(
         payload, 'django-insecure-45-%2klm@4jhgrqi=_wvs8bc1us97kke_1r(pm*o+70t4c(*_6', algorithm='HS256')
     response = Response()
-    response.set_cookie('jwt_cookie', token, httponly=True)
+    response.set_cookie('jwt_cookie', token, httponly=True,samesite=None)
     response.data = {
         'jwt_token': token
     }
