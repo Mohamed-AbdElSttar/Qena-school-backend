@@ -48,6 +48,9 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+
+'django_cookies_samesite.middleware.CookiesSameSite',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -140,9 +143,7 @@ CORS_ALLOW_CREDENTIALS = True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_HEADERS = ['*']
 
-
 # you should add cros allowed headers
-# DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -154,7 +155,6 @@ MEDIA_URL = "/media/"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_SAMESITE = None
-
 
 
 
