@@ -69,6 +69,7 @@ class UserView(APIView):
         print('token : ', token)
         print('token type : ', type(token))
 
+
         if not token:
             raise AuthenticationFailed('Unauthenticated')
         try:
