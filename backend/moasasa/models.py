@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import User
+import datetime
 
 STATUS_TYPE = (
     ("binding", "binding"),
@@ -66,7 +67,10 @@ class CoursesGroup(models.Model):
     )
     session_num = models.IntegerField(null=False)
     start_date = models.DateField(null=False)
+    next_session_date = models.DateTimeField(null=False)
     schedule = models.CharField(max_length=255, null=False)
+    price = models.IntegerField(null=False)
+    capacity = models.IntegerField(null=False)
 
     def __str__(self):
         return self.name
@@ -110,7 +114,11 @@ class Membership(models.Model):
     )
 
     status = models.CharField(choices=STATUS_TYPE, max_length=20)
-    validation_code = models.CharField(max_length=50)
+    image = models.ImageField(
+        upload_to="moasasa/reservation/images",
+        default="moasasa/reservation/images/default.jpg",
+        blank=True, null=True
+    )
 
     def __str__(self):
         return "{} in {}".format(self.student.name, self.group.name)
