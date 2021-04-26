@@ -15,7 +15,6 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class CoursesGroupSerializer(serializers.ModelSerializer):
     teacher_pk = serializers.PrimaryKeyRelatedField(
         queryset=Teacher.objects.all(), source='teacher', write_only=True
@@ -23,8 +22,8 @@ class CoursesGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CoursesGroup
-        fields = ['id', 'name', 'level', 'session_num',
-                  'start_date', 'schedule', 'teacher_pk', 'teacher']
+        fields = ['id', 'name', 'level', 'session_num', 'price', 'capacity',
+                  'start_date', 'next_session_date', 'schedule', 'teacher_pk', 'teacher']
         depth = 1
 
 
@@ -55,5 +54,5 @@ class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
         fields = ['id', 'group', 'student', 'student_pk',
-                  'status', 'validation_code', 'group_pk']
+                  'status', 'image', 'group_pk']
         depth = 2
