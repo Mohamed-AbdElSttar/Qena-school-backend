@@ -31,7 +31,7 @@ def login_user(request):
     token = jwt.encode(
         payload, 'django-insecure-45-%2klm@4jhgrqi=_wvs8bc1us97kke_1r(pm*o+70t4c(*_6', algorithm='HS256')
     response = Response()
-    response.set_cookie('jwt_cookie', token, httponly=True,samesite='lax')
+    response.set_cookie('jwt_cookie', token, httponly=True, samesite='lax')
     response.data = {
         'jwt_token': token
     }
@@ -65,14 +65,16 @@ class RegisterView(APIView):
 
 class UserView(APIView):
     def post(self, request):
-        print("local storage ",)
         token = request.data.get('jwt_token')
 
         if not token:
             raise AuthenticationFailed('un Authenticated user')
         try:
+            print("in try")
+            print(token)
             payload = jwt.decode(
                 token, 'django-insecure-45-%2klm@4jhgrqi=_wvs8bc1us97kke_1r(pm*o+70t4c(*_6', algorithms=['HS256'])
+            print(payload)
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('User Not Authenticated')
         user = User.objects.filter(id=payload['id']).first()
@@ -196,5 +198,3 @@ def register_admin(request):
     adminSerializer.save()
 
     return Response({'user': userSerializer.data, 'admin': adminSerializer.data}, status.HTTP_200_OK)
-
-
