@@ -65,16 +65,11 @@ class RegisterView(APIView):
 
 class UserView(APIView):
     def post(self, request):
-        print("local storage ",request.data.get('jwt_token'))
-        token = request.COOKIES.get('jwt_cookie')
-        print('token : ', token)
-        print('token type : ', type(token))
-
+        print("local storage ",)
+        token = request.data.get('jwt_token')
 
         if not token:
-            token = request.data.get('jwt_token')
-            if not token:
-                raise AuthenticationFailed('un Authenticated user')
+            raise AuthenticationFailed('un Authenticated user')
         try:
             payload = jwt.decode(
                 token, 'django-insecure-45-%2klm@4jhgrqi=_wvs8bc1us97kke_1r(pm*o+70t4c(*_6', algorithms=['HS256'])
