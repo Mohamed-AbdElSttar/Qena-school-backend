@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 import datetime
+from django.core.validators import RegexValidator
 
 STATUS_TYPE = (
     ("binding", "binding"),
@@ -67,7 +68,8 @@ class CoursesGroup(models.Model):
     )
     session_num = models.IntegerField(null=False)
     start_date = models.DateField(null=False)
-    next_session_date = models.DateTimeField(null=False)
+    next_session_date = models.DateField(null=False)
+    next_session_time = models.TimeField(null=False)
     schedule = models.CharField(max_length=255, null=False)
     price = models.IntegerField(null=False)
     capacity = models.IntegerField(null=False)
@@ -98,7 +100,8 @@ class Admin(models.Model):
     manager = models.ForeignKey(
         "self", null=True, related_name="admin", on_delete=models.SET_NULL
     )
-    ssn = models.CharField(null=False, max_length=14)
+    ssn = models.CharField(null=False, validators=[RegexValidator(
+        regex='^[0-9]{14}$', message='Length has to be 14', code='nomatch')], max_length=14, unique=True)
 
     def __str__(self):
         return self.name

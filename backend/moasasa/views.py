@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import MembershipSerializer, PostSerializer, CoursesGroupSerializer, StudentSerializer,TeacherSerializer,AdminSerializer
+from .serializers import MembershipSerializer, PostSerializer, CoursesGroupSerializer, StudentSerializer, TeacherSerializer, AdminSerializer
 
 from .models import *
 # Create your views here.
@@ -31,41 +31,41 @@ def get_student_mempership(request, id):
         serializer = MembershipSerializer(queryset, many=True)
         return Response(serializer.data)
 
+
 @api_view(['GET'])
-def get_student_by_user_id(request,user_id):
-    print("new api works",user_id)
-    queryset=Student.objects.filter(user=user_id).first()
+def get_student_by_user_id(request, user_id):
+    print("new api works", user_id)
+    queryset = Student.objects.filter(user=user_id).first()
     print(queryset)
     if queryset:
-        serializer=StudentSerializer(queryset)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        serializer = StudentSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response({
-            "message":status.HTTP_404_NOT_FOUND
+            "message": status.HTTP_404_NOT_FOUND
         })
 
+
 @api_view(["GET"])
-def get_teacher_by_user_id(request,id):
-    queryset=Teacher.objects.filter(user=id).first()
+def get_teacher_by_user_id(request, id):
+    queryset = Teacher.objects.filter(user=id).first()
     if queryset:
-        serializer=TeacherSerializer(queryset)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        serializer = TeacherSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response({
-        'message':status.HTTP_404_NOT_FOUND
+        'message': status.HTTP_404_NOT_FOUND
     })
+
 
 @api_view(['GET'])
-def get_admin_by_user_id(request,user_id):
-    queryset=Admin.objects.filter(user=user_id).first()
+def get_admin_by_user_id(request, user_id):
+    queryset = Admin.objects.filter(user=user_id).first()
     if queryset:
-        serializer=AdminSerializer(queryset)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        serializer = AdminSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response({
-        'message':status.HTTP_404_NOT_FOUND
+        'message': status.HTTP_404_NOT_FOUND
     })
-
-
-
 
 
 @api_view(['POST'])
