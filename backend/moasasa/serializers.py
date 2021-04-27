@@ -23,7 +23,7 @@ class CoursesGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoursesGroup
         fields = ['id', 'name', 'level', 'session_num', 'price', 'capacity',
-                  'start_date', 'next_session_date', 'schedule', 'teacher_pk', 'teacher']
+                  'start_date', 'next_session_date', 'next_session_time', 'schedule', 'teacher_pk', 'teacher']
         depth = 1
 
 
