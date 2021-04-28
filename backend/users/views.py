@@ -13,11 +13,6 @@ from django.core.mail import send_mail
 import uuid
 from django.contrib.auth.hashers import make_password
 from moasasa.serializers import StudentSerializer, TeacherSerializer, AdminSerializer
-
-
-code=''
-EMAIL=''
-
 @api_view(['POST'])
 def login_user(request):
     email = request.data.get('email')
@@ -26,6 +21,7 @@ def login_user(request):
     if user is None:
         raise AuthenticationFailed('User Not Found')
     if not user.check_password(password):
+        print(password)
         raise AuthenticationFailed('Incorrect password')
     payload = {
         "id": user.id,
@@ -70,7 +66,6 @@ class RegisterView(APIView):
 
 class UserView(APIView):
     def post(self, request):
-        print("local storage ", request.data.get('jwt_token'))
         token = request.data.get('jwt_token')
 
         if not token:
@@ -186,7 +181,7 @@ def register_admin(request):
 
     user = User.objects.filter(email=email).first()
     if user:
-        raise AuthenticationFailed('User Already Exist')
+        raise AuthenticationFailed('هذا المستخدم موجود بالفعل')
     userSerializer = UserSerializer(data=requestUser)
     userSerializer.is_valid(raise_exception=True)
     userSerializer.save()
@@ -204,8 +199,6 @@ def register_admin(request):
     adminSerializer.save()
 
     return Response({'user': userSerializer.data, 'admin': adminSerializer.data}, status.HTTP_200_OK)
-
-
 
 @api_view(['POST'])
 def check_mail(request):
@@ -267,6 +260,7 @@ def reset_password(request):
     raise AuthenticationFailed('كلمات المرور غير متطابقة')
 
 
+
 @api_view(['POST'])
 def confirm_booking_mail(request):
     name=request.data.get('name')
@@ -289,4 +283,5 @@ def confirm_booking_mail(request):
         })
     except:
         raise AuthenticationFailed('لم يتم ارسال رسالتك')
+
 

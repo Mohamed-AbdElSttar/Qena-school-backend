@@ -16,5 +16,4 @@ urlpatterns = [
     path("check-code", check_code_validity, name="checkcode"),
     path("reset-password", reset_password, name="resetpassword"),
     path("confirm-booking", confirm_booking_mail, name="confirmbooking"),
-
 ]

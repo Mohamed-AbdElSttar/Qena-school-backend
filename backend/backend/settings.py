@@ -33,7 +33,6 @@ EMAIL_HOST_USER = 'testerdjango6@gmail.com'
 EMAIL_HOST_PASSWORD = 'djangoadmin'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-
 ALLOWED_HOSTS = []
 
 
