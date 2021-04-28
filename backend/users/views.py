@@ -9,9 +9,14 @@ from .serializers import UserSerializer
 import jwt
 import datetime
 from rest_framework.views import APIView
-
+from django.core.mail import send_mail
+import uuid
+from django.contrib.auth.hashers import make_password
 from moasasa.serializers import StudentSerializer, TeacherSerializer, AdminSerializer
 
+
+code=''
+EMAIL=''
 
 @api_view(['POST'])
 def login_user(request):
@@ -199,3 +204,67 @@ def register_admin(request):
     adminSerializer.save()
 
     return Response({'user': userSerializer.data, 'admin': adminSerializer.data}, status.HTTP_200_OK)
+
+
+
+@api_view(['POST'])
+def check_mail(request):
+    user=User.objects.filter(email=request.data.get('email')).first()
+    if user:
+        serializer=UserSerializer(user)
+        return Response(serializer.data)
+    raise AuthenticationFailed('هذا البريد الاليكتروني غير موجود')
+
+@api_view(['POST'])
+def generate_code_reset_password(request):
+    email=request.data.get('email')
+    global EMAIL
+    global code
+    EMAIL=email
+    code= uuid.uuid4().hex.upper()[0:6]
+    subject="رمز اعادة تعيين كلمة المرور من موقع الخدمات الالكترونية"
+    send_mail(
+        subject,
+        code,
+        'testerdjango6@gmail.com',
+        [email,],
+        fail_silently=False,
+    )
+    return Response({
+        'code':code
+    })
+
+@api_view(['POST'])
+def check_code_validity(request):
+    print(code)
+    print(EMAIL,"email ")
+    if request.data.get('code')==code:
+        return Response({
+            'status':status.HTTP_200_OK
+        })
+    else:
+        raise AuthenticationFailed('برجاء ادخل الكود الصحيح')
+
+@api_view(['PUT'])
+def reset_password(request):
+    password1=request.data.get('password1')
+    password2= request.data.get('password2')
+    if password1==password2:
+        user=User.objects.filter(email=EMAIL).first()
+        password1=make_password(password1)
+        updated_data={
+        'email': EMAIL,
+        'password': password1,
+        'role': user.role
+                    }
+        serializer=UserSerializer(user,data=updated_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'message':status.HTTP_202_ACCEPTED
+            })
+        raise AuthenticationFailed('not changed')
+    raise AuthenticationFailed('كلمات المرور غير متطابقة')
+
+
+
