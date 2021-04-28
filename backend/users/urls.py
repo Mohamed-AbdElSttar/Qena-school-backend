@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import login_user, logout_user, RegisterView, UserView, register_student, register_teacher, register_admin, \
-    check_mail, generate_code_reset_password, check_code_validity, reset_password
+    check_mail, generate_code_reset_password, check_code_validity, reset_password, confirm_booking_mail
 
 app_name = 'users'
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     path("get-code", generate_code_reset_password, name="getcode"),
     path("check-code", check_code_validity, name="checkcode"),
     path("reset-password", reset_password, name="resetpassword"),
+    path("confirm-booking", confirm_booking_mail, name="confirmbooking"),
 ]

@@ -22,7 +22,6 @@ urlpatterns = [
     path('get-user-student/<int:user_id>', get_student_by_user_id, name='get_user_student'),
     path('get-teacher-user/<int:id>',get_teacher_by_user_id,name='get_teacher_by_user_id'),
     path('get-admin-user/<int:user_id>', get_admin_by_user_id, name='get_admin_by_user_id'),
-
     path("search-groups", groups_search, name="searchgroups"),
 
 ]

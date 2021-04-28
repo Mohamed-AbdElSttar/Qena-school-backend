@@ -2,4 +2,5 @@
 *.pot
 *.pyc
 media
+migrations
 __pycache__/
