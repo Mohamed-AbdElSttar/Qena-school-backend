@@ -267,4 +267,26 @@ def reset_password(request):
     raise AuthenticationFailed('كلمات المرور غير متطابقة')
 
 
+@api_view(['POST'])
+def confirm_booking_mail(request):
+    name=request.data.get('name')
+    course=request.data.get('course')
+    teacher=request.data.get('teacher')
+
+    subject='مرحبا {}'.format(name)
+    body='تم تاكيد حجزك بنجاح في كورس {} مع الاستاذ {}'.format(course,teacher)
+    email=request.data.get('email')
+    try:
+        send_mail(
+            subject,
+            body,
+            'testerdjango6@gmail.com',
+            [email, ],
+            fail_silently=False,
+        )
+        return Response({
+            'status':status.HTTP_200_OK
+        })
+    except:
+        raise AuthenticationFailed('لم يتم ارسال رسالتك')
 
