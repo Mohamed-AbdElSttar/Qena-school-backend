@@ -13,7 +13,7 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = '__all__'
-
+        # fields=['id','name','level','phone','image','user']
 
 class CoursesGroupSerializer(serializers.ModelSerializer):
     teacher_pk = serializers.PrimaryKeyRelatedField(
