@@ -5,7 +5,7 @@ from .api import *
 from rest_framework.routers import DefaultRouter
 
 from .views import get_post_group, get_teacher_groups, get_student_mempership, groups_search, get_student_by_user_id, \
-    get_teacher_by_user_id,get_admin_by_user_id
+    get_teacher_by_user_id, get_admin_by_user_id, today_groups, send_meeting_url
 
 router = DefaultRouter()
 router.register("student", StudentViewset)
@@ -23,6 +23,8 @@ urlpatterns = [
     path('get-teacher-user/<int:id>',get_teacher_by_user_id,name='get_teacher_by_user_id'),
     path('get-admin-user/<int:user_id>', get_admin_by_user_id, name='get_admin_by_user_id'),
     path("search-groups", groups_search, name="searchgroups"),
+    path("today-groups", today_groups, name="todaygroups"),
+    path("send-urls", send_meeting_url, name="sendurls"),
 
 ]
 urlpatterns += router.urls
