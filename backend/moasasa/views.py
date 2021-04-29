@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
@@ -91,20 +92,30 @@ def today_groups(request):
 
 @api_view(['POST'])
 def send_meeting_url(request):
-    group_id=request.data.get('group_id')
     emails = []
+    group_id=request.data.get('group_id')
     user_id=request.data.get('user_id')
-    teacher_user=User.objects.filter(id=user_id)
+    teacher_user=User.objects.filter(id=int(user_id))
+    teacher_user=teacher_user[0]
     url=request.data.get('url')
     emails.append(teacher_user)
     memberships=Membership.objects.filter(group=group_id)
     for mem in memberships:
         if mem.status=='active':
-            student=Student.objects.filter(id=mem.student).first()
-            std_user=User.objects.filter(id=student.user)
-            emails.append(std_user.email)
+            student=Student.objects.get(id=mem.student.id)
+            emails.append(student.user)
     if emails:
         print(emails)
+        subject="رابط حضور الحصة"
+        # send mail for all students
+        send_mail(
+            subject,
+            url,
+            'testerdjango6@gmail.com',
+            emails,
+            fail_silently=False,
+        )
+
         return Response({
             'message':status.HTTP_200_OK
         })
