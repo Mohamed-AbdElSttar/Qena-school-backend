@@ -122,4 +122,21 @@ def send_meeting_url(request):
     else:
         raise AuthenticationFailed('انتهت حجوزات هذه المحموعة')
 
+@api_view(['GET'])
+def change_to_binding(request, id):
+    queryset = Membership.objects.filter(group=id)
+    for mem in queryset:
+        mem.status = 'binding'
+        mem.save()
+    if request.method == 'GET':
+        serializer = MembershipSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+@api_view(['GET'])
+def get_membership_by_group(request, id):
+    queryset = Membership.objects.filter(group=id)
+    if request.method == 'GET':
+        serializer = MembershipSerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
